@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101522">
+<meta name="description" content="Fardin's personal study scheduler and learning journal">
+<link rel="manifest" href="manifest.webmanifest">
+<title>The Comeback Project</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#141d30;--panel2:#1b2940;--line:#293852;--text:#edf3ff;--muted:#9aabc4;--blue:#72a7ff;--purple:#b99aff;--green:#62d6a3;--amber:#ffc875;--red:#ff8b8b}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#0b1020,#111a2c 60%,#17152a);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+header{position:sticky;top:0;z-index:5;background:#0c1323ed;backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:14px max(16px,env(safe-area-inset-left))}
+.head{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-weight:850;letter-spacing:.2px}.brand small{display:block;color:var(--muted);font-weight:500;font-size:11px}
+button,input,select,textarea{font:inherit}button{border:1px solid var(--line);border-radius:12px;background:var(--panel2);color:var(--text);padding:10px 13px;cursor:pointer}button.primary{background:linear-gradient(120deg,#386cc2,#7054b4);border:0;font-weight:750}button.ghost{background:transparent}button.danger{color:var(--red)}
+main{max-width:1100px;margin:auto;padding:18px 14px 100px}.hero{padding:18px 4px 12px}.eyebrow{color:var(--green);font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}.hero h1{font-size:clamp(25px,5vw,39px);line-height:1.08;margin:7px 0}.hero p{color:var(--muted);margin:8px 0}
+.tabs{display:flex;gap:7px;overflow:auto;padding:8px 0 14px;position:sticky;top:60px;z-index:4;background:#0d1423f2}.tabs button{white-space:nowrap;font-size:13px}.tabs button.active{background:#28436d;border-color:#507ab7}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.card{background:linear-gradient(145deg,#172238,#121b2d);border:1px solid var(--line);border-radius:17px;padding:15px;min-width:0}.span3{grid-column:span 3}.span4{grid-column:span 4}.span6{grid-column:span 6}.span8{grid-column:span 8}.span12{grid-column:span 12}
+.metric{font-size:27px;font-weight:850;margin-top:5px}.muted{color:var(--muted)}.small{font-size:12px}.bar{height:8px;border-radius:20px;background:#26344b;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--green));width:0}
+h2{font-size:18px;margin:0 0 12px}h3{font-size:14px;margin:0 0 8px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.field{display:grid;gap:5px;margin:10px 0}.field label{font-size:12px;color:var(--muted);font-weight:700}input,select,textarea{width:100%;background:#0d1627;border:1px solid #31415d;border-radius:10px;color:var(--text);padding:11px}textarea{min-height:86px;resize:vertical}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.checklist{display:grid;gap:8px}.check{display:flex;gap:9px;align-items:flex-start;padding:9px;border:1px solid #263650;border-radius:10px;background:#101a2b}.check input{width:auto;margin-top:4px;accent-color:#68d6a5}.check span{flex:1}.check.done span{text-decoration:line-through;color:var(--muted)}
+.schedule{display:grid;gap:7px}.slot{display:grid;grid-template-columns:112px 1fr auto;gap:9px;align-items:center;padding:9px 10px;border-radius:10px;background:#101a2b;border:1px solid #263650}.slot time{font-size:12px;color:#a9c6ff;font-weight:750}.slot label{font-size:13px}.slot input{width:18px}
+.subject{border-left:3px solid var(--blue);padding-left:10px;margin:12px 0}.subject.ds{border-color:var(--green)}.subject.ai{border-color:var(--purple)}.subject.tr{border-color:var(--amber)}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:30px;padding:4px 8px;font-size:11px;color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.empty{padding:25px;text-align:center;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{text-align:left;padding:9px;border-bottom:1px solid var(--line)}th{color:var(--muted)}
+.hidden{display:none!important}.notice{border:1px solid #46674f;background:#142b27;padding:11px;border-radius:12px;color:#c5f4dd;font-size:12px}
+footer{color:var(--muted);font-size:11px;text-align:center;padding:22px}
+@media(max-width:700px){.span3,.span4,.span6,.span8{grid-column:span 12}.two{grid-template-columns:1fr}.slot{grid-template-columns:94px 1fr auto}.tabs{top:59px}.hero{padding-top:14px}}
+</style>
+</head>
+<body>
+<header><div class="head"><div class="brand">✦ THE COMEBACK PROJECT<small>Fardin's academic & life command center</small></div><button id="installBtn" class="primary" hidden>Install app</button></div></header>
+<main>
+<section class="hero"><div class="eyebrow">30-day discipline rebuild · Nov 2 – Dec 1, 2026</div><h1>Build consistency.<br><span style="color:#b99aff">Track every lesson.</span></h1><p>Python → Data Science → AI, with trading education and daily accountability.</p></section>
+<nav class="tabs" id="tabs">
+<button class="active" data-tab="dashboard">Overview</button><button data-tab="daily">Daily log</button><button data-tab="schedule">Scheduler</button><button data-tab="journal">Learning journal</button><button data-tab="missed">Missed work</button><button data-tab="analytics">Reports</button><button data-tab="settings">Backup</button>
+</nav>
+<section id="dashboard" class="page">
+<div class="grid">
+<div class="card span3"><div class="muted small">Today's focused study</div><div class="metric" id="dashHours">0h</div><div class="small muted">Target: 8–9 hours</div></div>
+<div class="card span3"><div class="muted small">Tasks completed</div><div class="metric" id="dashTasks">0/0</div><div class="small muted">Today's schedule</div></div>
+<div class="card span3"><div class="muted small">Days logged</div><div class="metric" id="dashDays">0</div><div class="small muted">Of 30 programme days</div></div>
+<div class="card span3"><div class="muted small">Learning entries</div><div class="metric" id="dashEntries">0</div><div class="small muted">Topics and practice notes</div></div>
+<div class="card span8"><h2>Today's focus</h2><div id="todayFocus" class="schedule"></div></div>
+<div class="card span4"><h2>Priority tracks</h2><div class="subject"><b>Python</b><div class="small muted">Daily concepts, coding and exercises</div></div><div class="subject ds"><b>Data Science</b><div class="small muted">Krish Naik course, classes and practicals</div></div><div class="subject ai"><b>AI & Mathematics</b><div class="small muted">Statistics, probability and ML foundations</div></div><div class="subject tr"><b>Trading</b><div class="small muted">Classes, journaling and risk management</div></div></div>
+<div class="card span12"><div class="row"><h2>30-day consistency</h2><span class="pill" id="completionLabel">0% logged</span></div><div class="bar"><i id="completionBar"></i></div><p class="small muted">A day counts as logged when you save its daily record. A missed day is information, not failure.</p></div>
+</div></section>
+
+<section id="daily" class="page hidden">
+<div class="card"><div class="row"><h2>Daily logbook</h2><span class="pill">Autosaves on submit</span></div>
+<div class="two"><div class="field"><label>Record date</label><input type="date" id="date"></div><div class="field"><label>Day mood</label><select id="mood"><option>Excellent</option><option>Good</option><option selected>Okay</option><option>Bad</option></select></div></div>
+<div class="two"><div class="field"><label>Actual wake-up</label><input id="wake" placeholder="e.g. 10:45 AM"></div><div class="field"><label>Actual bedtime</label><input id="sleep" placeholder="e.g. 1:40 AM"></div></div>
+<div class="field"><label>Focused study hours</label><input type="number" min="0" max="24" step=".25" id="hours" placeholder="e.g. 7.5"></div>
+<h3>Schedule completion</h3><div class="checklist" id="dailyChecks"></div>
+<h3 style="margin-top:18px">What did you learn?</h3>
+<div class="field"><label>Python & programming</label><textarea id="python" placeholder="Topics, concepts, syntax, code written, exercises solved..."></textarea></div>
+<div class="field"><label>Data Science</label><textarea id="dataScience" placeholder="Course, lecture numbers, concepts, notes, practical work..."></textarea></div>
+<div class="field"><label>AI & mathematics</label><textarea id="ai" placeholder="Statistics, probability, linear algebra, ML/AI concepts..."></textarea></div>
+<div class="field"><label>Trading education</label><textarea id="trading" placeholder="Classes, concepts, chart analysis, risk management..."></textarea></div>
+<div class="field"><label>Projects and practical achievements</label><textarea id="practice" placeholder="Programs, exercises, projects, GitHub work..."></textarea></div>
+<h3 style="margin-top:18px">What did you miss?</h3>
+<div class="field"><label>Incomplete lessons / tasks</label><textarea id="missed" placeholder="List what you didn't complete or attend..."></textarea></div>
+<div class="field"><label>Why did you miss them?</label><textarea id="reason" placeholder="Overslept, distraction, class conflict, technical issue..."></textarea></div>
+<div class="field"><label>Questions and difficult concepts</label><textarea id="questions" placeholder="What should we revisit together?"></textarea></div>
+<div class="field"><label>Tomorrow's priorities</label><textarea id="tomorrow" placeholder="Specific lessons, exercises and unfinished tasks..."></textarea></div>
+<div class="field"><label>Daily reflection</label><textarea id="reflection" placeholder="What went well? What needs improvement?"></textarea></div>
+<div class="actions"><button class="primary" id="saveDay">Save daily report</button><button id="clearDay">Clear form</button></div>
+<p class="small muted" id="saveStatus" aria-live="polite">Your records stay on this device. Export backups regularly.</p></div>
+</section>
+
+<section id="schedule" class="page hidden">
+<div class="card"><div class="row"><h2>Permanent daily timetable</h2><span class="pill">Editable per day via checkboxes</span></div><p class="muted small">Default routine based on a 10:30 AM wake-up and 1:30 AM bedtime. Adjust class days as needed.</p><div class="schedule" id="scheduleList"></div></div>
+<div class="card" style="margin-top:12px"><h2>Weekly focus</h2><table><thead><tr><th>Day</th><th>Focus</th></tr></thead><tbody>
+<tr><td>Saturday</td><td>Python + weekend Data Science class + trading</td></tr><tr><td>Sunday</td><td>Python + weekend Data Science class + weekly planning</td></tr><tr><td>Monday</td><td>Python + Data Science + AI</td></tr><tr><td>Tuesday</td><td>Python + Data Science + statistics</td></tr><tr><td>Wednesday</td><td>Python + Data Science / alternate-week extra class + trading</td></tr><tr><td>Thursday</td><td>Python + Data Science practical work</td></tr><tr><td>Friday</td><td>Weekly tests, project work and review</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="journal" class="page hidden">
+<div class="card"><h2>Learning journal</h2><p class="small muted">Add individual learning entries whenever you finish a lesson or understand a new concept.</p>
+<div class="two"><div class="field"><label>Date</label><input type="date" id="entryDate"></div><div class="field"><label>Subject</label><select id="entrySubject"><option>Python</option><option>Data Science</option><option>AI / Mathematics</option><option>Trading</option><option>Other</option></select></div></div>
+<div class="field"><label>Topic / lesson title</label><input id="entryTitle" placeholder="e.g. Python while loops"></div>
+<div class="field"><label>Learning notes</label><textarea id="entryNotes" placeholder="Explain what you learned in your own words..."></textarea></div>
+<div class="field"><label>Practice / evidence</label><textarea id="entryEvidence" placeholder="Code written, exercises solved, notebook, project or result..."></textarea></div>
+<div class="field"><label>Understanding level</label><select id="entryLevel"><option>Need to revisit</option><option>Learning</option><option>Understood</option><option>Applied independently</option></select></div>
+<button class="primary" id="addEntry">Add learning entry</button></div>
+<div class="card" style="margin-top:12px"><div class="row"><h2>Learning history</h2><span class="pill" id="entryCount">0 entries</span></div><div id="entries"></div></div>
+</section>
+
+<section id="missed" class="page hidden">
+<div class="card"><h2>Pending work & missed tasks</h2><p class="small muted">Turn unfinished work into a manageable next action. Don't hide missed tasks—reschedule them.</p>
+<div class="field"><label>Task / lesson</label><input id="missTitle" placeholder="e.g. Revise Python nested loops"></div>
+<div class="two"><div class="field"><label>Subject</label><select id="missSubject"><option>Python</option><option>Data Science</option><option>AI / Mathematics</option><option>Trading</option><option>Personal</option></select></div><div class="field"><label>Priority</label><select id="missPriority"><option>High</option><option selected>Medium</option><option>Low</option></select></div></div>
+<div class="field"><label>Reason missed</label><textarea id="missWhy" placeholder="Why wasn't it completed?"></textarea></div>
+<div class="field"><label>Reschedule date</label><input type="date" id="missDue"></div>
+<button class="primary" id="addMiss">Add pending task</button></div>
+<div class="card" style="margin-top:12px"><h2>Pending list</h2><div id="missList"></div></div>
+</section>
+
+<section id="analytics" class="page hidden">
+<div class="grid">
+<div class="card span4"><div class="muted small">Total study hours</div><div class="metric" id="totalHours">0</div></div>
+<div class="card span4"><div class="muted small">Average hours / logged day</div><div class="metric" id="avgHours">0</div></div>
+<div class="card span4"><div class="muted small">Pending tasks</div><div class="metric" id="pendingCount">0</div></div>
+<div class="card span12"><h2>Daily study history</h2><div id="history"></div></div>
+<div class="card span12"><h2>Subject learning entries</h2><div id="subjectStats"></div></div>
+</div></section>
+
+<section id="settings" class="page hidden">
+<div class="card"><h2>Backup & restore</h2><div class="notice">Your data is saved locally in this browser on this device. It is not automatically synced to ChatGPT or another phone. Export a backup frequently.</div>
+<div class="actions"><button class="primary" id="export">Export all data (JSON)</button><button id="csv">Export daily logs (CSV)</button><label class="pill" style="cursor:pointer;padding:10px">Import backup<input type="file" id="importFile" accept=".json,application/json" hidden></label></div>
+<p class="small muted">Use JSON backup to move your schedule and records to another device or browser. Importing replaces the current local dataset, so export first.</p>
+<button class="danger" id="erase">Delete all local data</button></div>
+<div class="card" style="margin-top:12px"><h2>Programme settings</h2><p class="muted small">30-day reset: Nov 2 – Dec 1, 2026 · Wake-up: 10:30 AM · Sleep: 1:30 AM · Study target: 8–9 hours.</p></div>
+</section>
+<footer>THE COMEBACK PROJECT · Your progress is built one honest day at a time.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id), KEY='comeback-project-v1';
+const activities=['Wake up by 10:30 AM','Python concepts / lessons','Python coding practice','Data Science course / class','Data Science practical work','AI / Mathematics','Trading education / class','Project or daily revision','Exercise / walking','Daily review','Sleep by 1:30 AM'];
+const slots=[['10:30–11:00 AM','Wake up, freshen up, make bed'],['11:00–11:30 AM','Breakfast and daily planning'],['11:30 AM–1:00 PM','Python concepts and lessons'],['1:00–1:15 PM','Break'],['1:15–2:45 PM','Python coding exercises'],['2:45–3:00 PM','Short break'],['3:00–4:00 PM','Lunch and rest'],['4:00–5:30 PM','Data Science course lessons'],['5:30–5:45 PM','Break'],['5:45–7:15 PM','Data Science practical work'],['7:15–8:00 PM','Exercise, shower and refresh'],['8:00–9:00 PM','Dinner and family time'],['9:00–10:00 PM','AI / Mathematics / Statistics'],['10:00–10:15 PM','Break'],['10:15–11:15 PM','Trading class / revision'],['11:15–11:30 PM','Break'],['11:30 PM–12:30 AM','Python project / daily revision'],['12:30–1:00 AM','Personal time'],['1:00–1:30 AM','Wind down and sleep preparation']];
+let db=load();function load(){try{return JSON.parse(localStorage.getItem(KEY))||{days:{},entries:[],missed:[]}}catch(e){return{days:{},entries:[],missed:[]}}}
+function persist(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
+function today(){return new Date().toLocaleDateString('en-CA')}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('date').value=today();$('entryDate').value=today();
+function renderChecks(selected=[]){$('dailyChecks').innerHTML=activities.map((a,i)=>`<label class="check ${selected.includes(a)?'done':''}"><input type="checkbox" value="${esc(a)}" ${selected.includes(a)?'checked':''}><span>${esc(a)}</span></label>`).join('')}
+function formLoad(){let d=db.days[$('date').value]||{};['mood','wake','sleep','hours','python','dataScience','ai','trading','practice','missed','reason','questions','tomorrow','reflection'].forEach(k=>$(k).value=d[k]??(k==='mood'?'Okay':''));renderChecks(d.completed||[])}
+$('date').addEventListener('change',formLoad);
+$('saveDay').onclick=()=>{let d={};['mood','wake','sleep','hours','python','dataScience','ai','trading','practice','missed','reason','questions','tomorrow','reflection'].forEach(k=>d[k]=$(k).value);d.completed=[...$('dailyChecks').querySelectorAll('input:checked')].map(x=>x.value);d.updatedAt=new Date().toISOString();db.days[$('date').value]=d;persist();$('saveStatus').textContent='Saved on this device at '+new Date().toLocaleTimeString();};
+$('clearDay').onclick=()=>{if(confirm('Clear the form fields? Saved records will not be deleted.')){['wake','sleep','hours','python','dataScience','ai','trading','practice','missed','reason','questions','tomorrow','reflection'].forEach(k=>$(k).value='');$('mood').value='Okay';renderChecks()}};
+$('scheduleList').innerHTML=slots.map(([t,n])=>`<div class="slot"><time>${t}</time><label>${n}</label><span class="pill">${n.includes('Python')?'Python':n.includes('Data Science')?'Data Science':n.includes('AI')?'AI':n.includes('Trading')?'Trading':'Routine'}</span></div>`).join('');
+$('todayFocus').innerHTML=slots.filter((x,i)=>[2,4,7,9,12,14,16].includes(i)).map(([t,n])=>`<div class="slot"><time>${t}</time><label>${n}</label></div>`).join('');
+$('addEntry').onclick=()=>{let title=$('entryTitle').value.trim();if(!title){alert('Add a topic or lesson title first.');return}db.entries.unshift({id:crypto.randomUUID(),date:$('entryDate').value,subject:$('entrySubject').value,title,notes:$('entryNotes').value,evidence:$('entryEvidence').value,level:$('entryLevel').value});['entryTitle','entryNotes','entryEvidence'].forEach(k=>$(k).value='');persist()};
+$('addMiss').onclick=()=>{let title=$('missTitle').value.trim();if(!title){alert('Add a task title first.');return}db.missed.unshift({id:crypto.randomUUID(),title,subject:$('missSubject').value,priority:$('missPriority').value,why:$('missWhy').value,due:$('missDue').value,done:false});['missTitle','missWhy','missDue'].forEach(k=>$(k).value='');persist()};
+function renderEntries(){$('entryCount').textContent=db.entries.length+' entries';$('entries').innerHTML=db.entries.length?db.entries.map(e=>`<div class="check" style="display:block;margin:8px 0"><div class="row"><b>${esc(e.title)}</b><span class="pill">${esc(e.subject)}</span></div><div class="small muted">${esc(e.date)} · ${esc(e.level)}</div><p>${esc(e.notes)}</p><div class="small">${esc(e.evidence)}</div><div class="actions"><button class="danger" onclick="deleteEntry('${e.id}')">Delete</button></div></div>`).join(''):'<div class="empty">No learning entries yet. Add your first lesson above.</div>'}
+window.deleteEntry=id=>{db.entries=db.entries.filter(x=>x.id!==id);persist()};
+function renderMiss(){$('missList').innerHTML=db.missed.length?db.missed.map(m=>`<div class="check ${m.done?'done':''}" style="display:block;margin:8px 0"><div class="row"><label><input type="checkbox" ${m.done?'checked':''} onchange="toggleMiss('${m.id}',this.checked')"> ${esc(m.title)}</label><span class="pill">${esc(m.priority)}</span></div><div class="small muted">${esc(m.subject)} · Due ${esc(m.due||'Not set')}</div><p class="small">${esc(m.why)}</p><button class="danger" onclick="deleteMiss('${m.id}')">Delete</button></div>`).join(''):'<div class="empty">No pending tasks. Add missed work when needed.</div>'}
+window.toggleMiss=(id,v)=>{let m=db.missed.find(x=>x.id===id);if(m)m.done=v;persist()};window.deleteMiss=id=>{db.missed=db.missed.filter(x=>x.id!==id);persist()};
+function renderAnalytics(){let days=Object.entries(db.days),hrs=days.reduce((s,[,d])=>s+(Number(d.hours)||0),0);$('totalHours').textContent=hrs.toFixed(1);$('avgHours').textContent=days.length?(hrs/days.length).toFixed(1):'0';$('pendingCount').textContent=db.missed.filter(x=>!x.done).length;$('history').innerHTML=days.length?'<table><tr><th>Date</th><th>Hours</th><th>Completed</th><th>Mood</th></tr>'+days.sort((a,b)=>b[0].localeCompare(a[0])).map(([date,d])=>`<tr><td>${date}</td><td>${Number(d.hours)||0}</td><td>${(d.completed||[]).length}/${activities.length}</td><td>${esc(d.mood||'')}</td></tr>`).join('')+'</table>':'<div class="empty">Save daily reports to build your history.</div>';let subjects=['Python','Data Science','AI / Mathematics','Trading','Other'];$('subjectStats').innerHTML=subjects.map(s=>`<div class="row" style="padding:8px;border-bottom:1px solid var(--line)"><span>${s}</span><b>${db.entries.filter(e=>e.subject===s).length} entries</b></div>`).join('')}
+function renderDash(){let d=db.days[today()]||{};$('dashHours').textContent=(Number(d.hours)||0)+'h';$('dashTasks').textContent=(d.completed||[]).length+'/'+activities.length;$('dashDays').textContent=Object.keys(db.days).length;$('dashEntries').textContent=db.entries.length;let n=Object.keys(db.days).length,p=Math.min(100,Math.round(n/30*100));$('completionBar').style.width=p+'%';$('completionLabel').textContent=p+'% logged'}
+function renderAll(){renderEntries();renderMiss();renderAnalytics();renderDash()}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));$(b.dataset.tab).classList.remove('hidden');if(b.dataset.tab==='daily')formLoad()});
+$('export').onclick=()=>download('comeback-project-backup.json',JSON.stringify(db,null,2),'application/json');
+$('csv').onclick=()=>{let rows=[['date','hours','mood','wake','sleep','completed','python','dataScience','ai','trading','practice','missed','reason','questions','tomorrow','reflection'],...Object.entries(db.days).map(([date,d])=>[date,d.hours,d.mood,d.wake,d.sleep,(d.completed||[]).join('; '),d.python,d.dataScience,d.ai,d.trading,d.practice,d.missed,d.reason,d.questions,d.tomorrow,d.reflection])];download('comeback-daily-logs.csv',rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n'),'text/csv')};
+function download(name,data,type){let a=document.createElement('a'),u=URL.createObjectURL(new Blob([data],{type}));a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
+$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let x=JSON.parse(await f.text());if(!x.days||!x.entries||!x.missed)throw Error();if(confirm('Replace current local data with this backup?')){db=x;persist();alert('Backup restored.')}}catch(err){alert('That backup file is invalid.')}e.target.value=''};
+$('erase').onclick=()=>{if(confirm('Permanently delete all Comeback Project data stored in this browser?')){db={days:{},entries:[],missed:[]};persist();formLoad()}};
+renderChecks();formLoad();renderAll();
+let deferred;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;$('installBtn').hidden=false});$('installBtn').onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;deferred=null;$('installBtn').hidden=true}else alert('On Android Chrome, use the browser menu and choose Add to Home screen / Install app.')};
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body></html>
